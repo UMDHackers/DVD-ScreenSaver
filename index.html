@@ -9,108 +9,124 @@
 				width: 300px;
 				position: absolute;
 			}
+			body {
+				background-color: black;
+			}
+		
 		</style>
 	</head>
 	
-	<body>
-		 
+	<body onload = "start()"> 
 		<!--<img id = "pic" src = "img/blue.png"><canvas id = "canvas" ></canvas>-->
-		<button onclick = "start()">start</button>
+		<!--<canvas id="myCanvas" width="wt" height="ht" style="border:1px solid #d3d3d3;">
 		
+		
+		</canvas>-->
 		<div id = "image">
-		
-		
-		
+			
+			
+			
 		</div>
 		<script>
 			function start() {
 				var div = document.getElementById("image");
 				var pos = 0;
-				var ht = window.innerWidth, wt = window.innerHeight;
+				var ht = document.documentElement.clientHeight, wt = document.documentElement.clientWidth;
 				var DIRS = ["NORTH EAST", "NORTH WEST", "SOUTH EAST", "SOUTH WEST"]; 
-				var COLORS = ["url('img/blue.png'), url('img/red.png'), url('img/teal.png'), url('img/green.png'), url('img/yellow.png'), url('img/purple.png')"];
-				var curr_dir = DIRS[3], curr_x = 0, curr_y = 0;
-				var id, sec = setInterval(move, 10000);
-				function move() {
-					for(var i = 0; i < 5; i++) {
-						console.log("loop");
-						if (curr_dir == "NORTH EAST") {
-							id  = setInterval(northEastMove, 5);
-						} else if (curr_dir == "SOUTH EAST") {
-							id = setInterval(southEastMove, 5);
-						} else if (curr_dir == "SOUTH WEST") {
-							console.log("HERE?");
-							id = setInterval(southWestMove, 5);
-						} else if (curr_dir == "NORTH WEST") {
-							id = setInterval(northWestMove, 5);
-						}
-					}
-					clearInterval(sec);
-				}
+				var COLORS = ["img/blue.png", "img/red.png", "img/teal.png"," img/green.png", "img/yellow.png", "img/purple.png"];
+				var curr_dir = DIRS[3], curr_x = 1, curr_y = 1;
+				var se = setInterval(southEastMove, 5), sw, ne, nw;
 				//var id = setInterval(moveSouthWest, 5);
 				function southWestMove() {
-					if (curr_x == 500 || curr_y == 1000) {
-						if(curr_x == 500) {
+					if (curr_x <= 0 || curr_y >= ht ) {
+						if(curr_x <= 0) {
+							console.log("curr_x " + curr_x + " curr_y " + curr_y);
 							curr_dir = "SOUTH EAST";
-						} else if (curr_y == 1000) {
+							console.log("comes here x");							
+							div.style.backgroundImage = 'url('+COLORS[Math.floor(Math.random() * 6)]+')';
+							se = setInterval(southEastMove, 5);
+						} else if (curr_y >= ht) {
 							curr_dir = "NORTH WEST";
+							console.log("curr_x " + curr_x + " curr_y " + curr_y);
+							console.log("comes here 1st");
+							div.style.backgroundImage = "url("+COLORS[Math.floor(Math.random() * 6)]+")";
+							nw = setInterval(northWestMove, 5);
 						}
-						div.style.backgroundImage = COLORS[Math.floor(Math.random() * 6)];
-						clearInterval(id);
+						clearInterval(sw);
 					} else {
-					  console.log("curr_x " + curr_x + " curr_y " + curr_y);
-					  curr_x++;
+					  curr_x--;
 					  curr_y++;					  
-					  div.style.top = curr_x + 'px'; 
-					  div.style.left = curr_y + 'px'; 
+					  div.style.top = curr_y + 'px'; 
+					  div.style.left = curr_x + 'px'; 
 					}
 				}
 				function southEastMove() {
-					if (curr_x == 0 || curr_y == 1000) {
-						if(curr_x == 0) {
+					if (curr_x >= wt || curr_y >= ht) {
+						if(curr_x >= wt) {
 							curr_dir = "SOUTH WEST";
-						} else if (curr_y == 1000) {
+							console.log("curr_x " + curr_x + " curr_y " + curr_y);
+							div.style.backgroundImage = "url("+COLORS[Math.floor(Math.random() * 6)]+")";
+							sw = setInterval(southWestMove, 5);
+
+						} else if (curr_y >= ht) {
 							curr_dir = "NORTH EAST";
+							console.log("curr_x " + curr_x + " curr_y " + curr_y);				
+							div.style.backgroundImage = "url("+COLORS[Math.floor(Math.random() * 6)]+")";
+							ne = setInterval(northEastMove, 5);
 						}
-						div.style.backgroundImage = COLORS[Math.floor(Math.random() * 6)];
-						clearInterval(id);
+						clearInterval(se);
 					} else {
-					  curr_x--;
+					//  console.log("curr_x " + curr_x + " curr_y " + curr_y);
+					  curr_x++;
 					  curr_y++;					  
-					  div.style.top = curr_x + 'px'; 
-					  div.style.left = curr_y + 'px'; 
+					  div.style.top = curr_y + 'px'; 
+					  div.style.left = curr_x + 'px'; 
 					}
 				}
 				function northWestMove() {
-					if(curr_x == 500 || curr_y == 0) {
-						if(curr_x == 500) {
-							curr_dir = "NORTH WEST";
-						} else if (curr_y == 0) {
+					if(curr_x <= 0 || curr_y <= 0) {
+						if(curr_x <= 0) {
+							curr_dir = "NORTH EAST";
+							console.log("curr_x " + curr_x + " curr_y " + curr_y);
+							div.style.backgroundImage = "url("+COLORS[Math.floor(Math.random() * 6)]+")";
+							ne = setInterval(northEastMove, 5);
+						} else if (curr_y <= 0) {
+							console.log("HERE?");
 							curr_dir = "SOUTH WEST";
+							console.log("curr_x " + curr_x + " curr_y " + curr_y);			
+							div.style.backgroundImage = "url("+COLORS[Math.floor(Math.random() * 6)]+")";
+							sw = setInterval(southWestMove, 5);
 						}
-						div.style.backgroundImage = COLORS[Math.floor(Math.random() * 6)];
-						clearInterval(id);						
+						clearInterval(nw);						
 					} else {
+					  console.log("curr_x " + curr_x + " curr_y " + curr_y);
 					  curr_x--;
-					  curr_y++;					  
-					  div.style.top = curr_x + 'px'; 
-					  div.style.left = curr_y + 'px'; 
+					  curr_y--;					  
+					  div.style.top = curr_y + 'px'; 
+					  div.style.left = curr_x + 'px'; 
 					}
 				}
 				function northEastMove() {
-					if(curr_x == 0 || curr_y == 0) {
-						if(curr_x == 0) {
+					if(curr_x >= wt || curr_y <= 0) {
+						if(curr_x >= wt) {
+							console.log("here? 2nd?");
+							console.log("curr_x " + curr_x + " curr_y " + curr_y);		
 							curr_dir = "NORTH WEST";
-						} else if (curr_y == 0) {
+							div.style.backgroundImage = "url("+COLORS[Math.floor(Math.random() * 6)]+")";
+							nw = setInterval(northWestMove, 5);
+						} else if (curr_y <= 0) {
+							console.log("here? 3rd?");
+							console.log("curr_x " + curr_x + " curr_y " + curr_y);					
 							curr_dir = "SOUTH EAST";
+							div.style.backgroundImage = "url("+COLORS[Math.floor(Math.random() * 6)]+")";
+							se = setInterval(southEastMove, 5);
 						}
-						div.style.backgroundImage = COLORS[Math.floor(Math.random() * 6)];
-						clearInterval(id);						
+						clearInterval(ne);						
 					} else {
-					  curr_x--;
+					  curr_x++;
 					  curr_y--;					  
-					  div.style.top = curr_x + 'px'; 
-					  div.style.left = curr_y + 'px'; 
+					  div.style.top = curr_y + 'px'; 
+					  div.style.left = curr_x + 'px'; 
 					}
 				}
 			}
@@ -118,53 +134,5 @@
 		</script> 
 	</body>
 </html>
-<!---
-	//	var w = window.innerWidth, h = window.innerHeight;
-		//	var canvas = document.getElementById('canvas');
-		//	canvas.width = w;
-		//	canvas.height = h;
-		//	var ctx = canvas.getContext('2d');
-		//	var image = new Image();
-			//image.src = 'img/blue.png';
-			//image.onload = function() {			
-//				ctx.drawImage(image, 0, 0);
-	//			animate();
-		//	};
-			//while(true) {
-			
-								
-					//} else if (curr_dir == "NORTH EAST") {
-					
-					//} else if (curr_dir == "SOUTH EAST") {
-					
-					//} else if (curr_dir == "SOUTH WEST") {
-					
-				//}
-				
-				
-			var DIRS = ["NORTH EAST", "NORTH WEST", "SOUTH EAST", "SOUTH WEST"]; 
-			var COLORS = ["img/blue.png, img/red.png, img/teal.png, img/green.png, img/yellow.png, img/purple.png"]
-			var curr_dir = DIRS[1], curr_x = 0, curr_y = 0;
-			var id;
-			var image = document.getElementById('image');
-			function animate() {
-			//	if (curr_dir == "NORTH_WEST") {
-					id = setInterval(northEastMove(), 5);
-				//}
-				//return;
-			}
-			function northEastMove() {
-				if(curr_x != h) {
-					curr_x++;
-					curr_y++;
-					image.style.top = curr_x + 'px';
-					image.style.left = curr_y + 'px';
-				} else {
-					clearInterval(id);
-					image.src = COLORS[2];
-				}
-					
-			}
 
-		-->
 		
