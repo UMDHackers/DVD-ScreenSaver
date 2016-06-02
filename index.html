@@ -2,9 +2,12 @@
 <html>
 	<head>
 		<title>DVD Screensaver</title>
-		<style>
+		<style type="text/css">
 			#image {
-				background-image:url("img/yellow.png");
+				background-image: url('img/blue.png');
+				height: 300px; 
+				width: 300px;
+				position: absolute;
 			}
 		</style>
 	</head>
@@ -12,34 +15,107 @@
 	<body>
 		 
 		<!--<img id = "pic" src = "img/blue.png"><canvas id = "canvas" ></canvas>-->
-		<div id = "image"></div>
+		<button onclick = "start()">start</button>
+		
+		<div id = "image">
+		
+		
+		
+		</div>
 		<script>
-	
-			var DIRS = ["NORTH EAST", "NORTH WEST", "SOUTH EAST", "SOUTH WEST"]; 
-			var COLORS = ["img/blue.png, img/red.png, img/teal.png, img/green.png, img/yellow.png, img/purple.png"]
-			var curr_dir = DIRS[1], curr_x = 0, curr_y = 0;
-			var id;
-			var image = document.getElementById('image');
-			function animate() {
-			//	if (curr_dir == "NORTH_WEST") {
-					id = setInterval(northEastMove(), 5);
-				//}
-				//return;
-			}
-			function northEastMove() {
-				if(curr_x != h) {
-					curr_x++;
-					curr_y++;
-					image.style.top = curr_x + 'px';
-					image.style.left = curr_y + 'px';
-				} else {
-					clearInterval(id);
-					image.src = COLORS[2];
+			function start() {
+				var div = document.getElementById("image");
+				var pos = 0;
+				var ht = window.innerWidth, wt = window.innerHeight;
+				var DIRS = ["NORTH EAST", "NORTH WEST", "SOUTH EAST", "SOUTH WEST"]; 
+				var COLORS = ["url('img/blue.png'), url('img/red.png'), url('img/teal.png'), url('img/green.png'), url('img/yellow.png'), url('img/purple.png')"];
+				var curr_dir = DIRS[3], curr_x = 0, curr_y = 0;
+				var id, sec = setInterval(move, 10000);
+				function move() {
+					for(var i = 0; i < 5; i++) {
+						console.log("loop");
+						if (curr_dir == "NORTH EAST") {
+							id  = setInterval(northEastMove, 5);
+						} else if (curr_dir == "SOUTH EAST") {
+							id = setInterval(southEastMove, 5);
+						} else if (curr_dir == "SOUTH WEST") {
+							console.log("HERE?");
+							id = setInterval(southWestMove, 5);
+						} else if (curr_dir == "NORTH WEST") {
+							id = setInterval(northWestMove, 5);
+						}
+					}
+					clearInterval(sec);
 				}
-					
+				//var id = setInterval(moveSouthWest, 5);
+				function southWestMove() {
+					if (curr_x == 500 || curr_y == 1000) {
+						if(curr_x == 500) {
+							curr_dir = "SOUTH EAST";
+						} else if (curr_y == 1000) {
+							curr_dir = "NORTH WEST";
+						}
+						div.style.backgroundImage = COLORS[Math.floor(Math.random() * 6)];
+						clearInterval(id);
+					} else {
+					  console.log("curr_x " + curr_x + " curr_y " + curr_y);
+					  curr_x++;
+					  curr_y++;					  
+					  div.style.top = curr_x + 'px'; 
+					  div.style.left = curr_y + 'px'; 
+					}
+				}
+				function southEastMove() {
+					if (curr_x == 0 || curr_y == 1000) {
+						if(curr_x == 0) {
+							curr_dir = "SOUTH WEST";
+						} else if (curr_y == 1000) {
+							curr_dir = "NORTH EAST";
+						}
+						div.style.backgroundImage = COLORS[Math.floor(Math.random() * 6)];
+						clearInterval(id);
+					} else {
+					  curr_x--;
+					  curr_y++;					  
+					  div.style.top = curr_x + 'px'; 
+					  div.style.left = curr_y + 'px'; 
+					}
+				}
+				function northWestMove() {
+					if(curr_x == 500 || curr_y == 0) {
+						if(curr_x == 500) {
+							curr_dir = "NORTH WEST";
+						} else if (curr_y == 0) {
+							curr_dir = "SOUTH WEST";
+						}
+						div.style.backgroundImage = COLORS[Math.floor(Math.random() * 6)];
+						clearInterval(id);						
+					} else {
+					  curr_x--;
+					  curr_y++;					  
+					  div.style.top = curr_x + 'px'; 
+					  div.style.left = curr_y + 'px'; 
+					}
+				}
+				function northEastMove() {
+					if(curr_x == 0 || curr_y == 0) {
+						if(curr_x == 0) {
+							curr_dir = "NORTH WEST";
+						} else if (curr_y == 0) {
+							curr_dir = "SOUTH EAST";
+						}
+						div.style.backgroundImage = COLORS[Math.floor(Math.random() * 6)];
+						clearInterval(id);						
+					} else {
+					  curr_x--;
+					  curr_y--;					  
+					  div.style.top = curr_x + 'px'; 
+					  div.style.left = curr_y + 'px'; 
+					}
+				}
 			}
 			
-		</script>
+		</script> 
 	</body>
 </html>
 <!---
@@ -64,6 +140,31 @@
 					//} else if (curr_dir == "SOUTH WEST") {
 					
 				//}
+				
+				
+			var DIRS = ["NORTH EAST", "NORTH WEST", "SOUTH EAST", "SOUTH WEST"]; 
+			var COLORS = ["img/blue.png, img/red.png, img/teal.png, img/green.png, img/yellow.png, img/purple.png"]
+			var curr_dir = DIRS[1], curr_x = 0, curr_y = 0;
+			var id;
+			var image = document.getElementById('image');
+			function animate() {
+			//	if (curr_dir == "NORTH_WEST") {
+					id = setInterval(northEastMove(), 5);
+				//}
+				//return;
+			}
+			function northEastMove() {
+				if(curr_x != h) {
+					curr_x++;
+					curr_y++;
+					image.style.top = curr_x + 'px';
+					image.style.left = curr_y + 'px';
+				} else {
+					clearInterval(id);
+					image.src = COLORS[2];
+				}
+					
+			}
 
 		-->
 		
